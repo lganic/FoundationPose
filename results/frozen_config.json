@@ -1,0 +1,13 @@
+{
+  "status": "FROZEN on 2026-11-06, before any refinement ran on a test-split target. Not to be changed after seeing test results.",
+  "chosen_on": "YCB-V dev_subset (scenes 50, 58, 59), detector masks, clean plus six corrupted conditions",
+  "config": {"w_depth": 1.0, "w_sil": 0.0, "w_rgb": 0.0, "sigma_depth": 0.003, "steps": 30},
+  "why": [
+    "Depth alone beat every combination with silhouette or color on dev.",
+    "Silhouette alone drifts along the camera ray (16.5 mm along the ray, 3.1 mm sideways).",
+    "Color alone hurts (ADD-S AUC -2.70), and a low color weight adds nothing reliable over depth alone.",
+    "sigma 3 mm with 30 steps matched the 60-step default on ADD-S and ADD, was slightly better on MSPD, and ran in half the time.",
+    "Rule set in advance: keep depth-only unless it does significant harm under a corruption where an alternative does not. It did no significant harm under any of the six (results/tables/dev_corruption_check.csv)."
+  ],
+  "set_args": "w_sil=0 w_rgb=0 sigma_depth=0.003 steps=30"
+}

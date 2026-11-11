@@ -1,0 +1,14 @@
+condition,method,adds_auc,harm_adds_auc,ar_mssd,harm_ar_mssd
+depth_noise_10,cand_depth,"+0.11 [-0.05,+0.31]",False,"+0.20 [-0.15,+0.57]",False
+depth_noise_10,cand_depth_rgb,"+0.13 [-0.01,+0.31]",False,"+0.27 [+0.00,+0.55]",False
+depth_noise_10,cand_depth_wide,"+0.06 [-0.09,+0.23]",False,"+0.27 [-0.13,+0.61]",False
+depth_holes_40,cand_depth,"+0.27 [+0.12,+0.42]",False,"+0.13 [-0.15,+0.44]",False
+depth_holes_40,cand_depth_rgb,"+0.31 [+0.17,+0.48]",False,"+0.20 [+0.00,+0.48]",False
+occlusion_50,cand_depth,"+0.03 [-0.21,+0.25]",False,"+0.07 [-0.54,+0.69]",False
+occlusion_50,cand_depth_rgb,"+0.06 [-0.18,+0.28]",False,"+0.20 [-0.37,+0.86]",False
+rgb_noise_25,cand_depth,"+0.19 [+0.03,+0.37]",False,"+0.20 [+0.00,+0.51]",False
+rgb_noise_25,cand_depth_rgb,"+0.17 [-0.01,+0.35]",False,"+0.27 [+0.00,+0.56]",False
+motion_blur_11,cand_depth,"+0.25 [+0.10,+0.42]",False,"-0.07 [-0.23,+0.00]",False
+motion_blur_11,cand_depth_rgb,"+0.25 [+0.10,+0.44]",False,"-0.07 [-0.23,+0.00]",False
+mask_dilate_7,cand_depth,"+0.16 [+0.01,+0.33]",False,"+0.20 [+0.00,+0.42]",False
+mask_dilate_7,cand_depth_rgb,"+0.22 [+0.05,+0.41]",False,"+0.20 [+0.00,+0.42]",False
