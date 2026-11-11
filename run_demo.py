@@ -9,7 +9,7 @@
 
 from estimater import *
 from datareader import *
-import argparse
+import argparse, shutil
 
 
 if __name__=='__main__':
@@ -21,6 +21,7 @@ if __name__=='__main__':
   parser.add_argument('--track_refine_iter', type=int, default=2)
   parser.add_argument('--debug', type=int, default=1)
   parser.add_argument('--debug_dir', type=str, default=f'{code_dir}/debug')
+  parser.add_argument('--headless', action='store_true', help='Do not open a preview window')
   args = parser.parse_args()
 
   set_logging_format()
@@ -30,7 +31,9 @@ if __name__=='__main__':
 
   debug = args.debug
   debug_dir = args.debug_dir
-  os.system(f'rm -rf {debug_dir}/* && mkdir -p {debug_dir}/track_vis {debug_dir}/ob_in_cam')
+  shutil.rmtree(debug_dir, ignore_errors=True)
+  os.makedirs(f'{debug_dir}/track_vis', exist_ok=True)
+  os.makedirs(f'{debug_dir}/ob_in_cam', exist_ok=True)
 
   to_origin, extents = trimesh.bounds.oriented_bounds(mesh)
   bbox = np.stack([-extents/2, extents/2], axis=0).reshape(2,3)
@@ -69,8 +72,9 @@ if __name__=='__main__':
       center_pose = pose@np.linalg.inv(to_origin)
       vis = draw_posed_3d_box(reader.K, img=color, ob_in_cam=center_pose, bbox=bbox)
       vis = draw_xyz_axis(color, ob_in_cam=center_pose, scale=0.1, K=reader.K, thickness=3, transparency=0, is_input_rgb=True)
-      cv2.imshow('1', vis[...,::-1])
-      cv2.waitKey(1)
+      if not args.headless:
+        cv2.imshow('1', vis[...,::-1])
+        cv2.waitKey(1)
 
 
     if debug>=2:

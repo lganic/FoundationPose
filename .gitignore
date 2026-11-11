@@ -156,3 +156,6 @@ data/
 logs/
 !BundleTrack/XMem/inference/data
 run_used.yml
+# Project: locally built sources, demo output and working data
+third_party/
+results/demo_mustard/

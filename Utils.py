@@ -8,12 +8,11 @@
 
 
 import os, sys, time,torch,pickle,trimesh,itertools,pdb,zipfile,datetime,imageio,gzip,logging,joblib,importlib,uuid,signal,multiprocessing,psutil,subprocess,tarfile,scipy,argparse
-from pytorch3d.transforms import so3_log_map,so3_exp_map,se3_exp_map,se3_log_map,matrix_to_axis_angle,matrix_to_euler_angles,euler_angles_to_matrix, rotation_6d_to_matrix
-from pytorch3d.renderer import FoVPerspectiveCameras, PerspectiveCameras, look_at_view_transform, look_at_rotation, RasterizationSettings, MeshRenderer, MeshRasterizer, BlendParams, SoftSilhouetteShader, HardPhongShader, PointLights, TexturesVertex
-from pytorch3d.renderer.mesh.rasterize_meshes import barycentric_coordinates
-from pytorch3d.renderer.mesh.shader import SoftDepthShader, HardFlatShader
-from pytorch3d.renderer.mesh.textures import Textures
-from pytorch3d.structures import Meshes
+sys.path.insert(0, os.path.dirname(os.path.realpath(__file__)))
+try:
+  from pytorch3d.transforms import so3_exp_map, rotation_6d_to_matrix
+except ImportError:  # pytorch3d is hard to build on Windows, and only these two functions are used
+  from compat_windows import so3_exp_map, rotation_6d_to_matrix
 from scipy.interpolate import griddata
 import nvdiffrast.torch as dr
 import torch.nn.functional as F
@@ -46,8 +45,9 @@ try:
   if os.path.isdir(_mycpp_build):
     sys.path.insert(0, _mycpp_build)
   import mycpp
+  mycpp.cluster_poses  # the mycpp/ source folder also imports, as an empty namespace package
 except Exception:
-  mycpp = None
+  from compat_windows import mycpp
 try:
   from bundlesdf.mycuda import common
 except:
@@ -694,15 +694,15 @@ def draw_xyz_axis(color, ob_in_cam, scale=0.1, K=np.eye(3), thickness=3, transpa
   arrow_len = 0
   tmp = color.copy()
   tmp1 = tmp.copy()
-  tmp1 = cv2.arrowedLine(tmp1, origin, xx, color=(0,0,255), thickness=thickness,line_type=line_type, tipLength=arrow_len)
+  tmp1 = cv2.arrowedLine(tmp1, origin, xx, color=(0,0,255), thickness=thickness,line_type=line_type, tipLength=max(arrow_len, 1e-6))
   mask = np.linalg.norm(tmp1-tmp, axis=-1)>0
   tmp[mask] = tmp[mask]*transparency + tmp1[mask]*(1-transparency)
   tmp1 = tmp.copy()
-  tmp1 = cv2.arrowedLine(tmp1, origin, yy, color=(0,255,0), thickness=thickness,line_type=line_type, tipLength=arrow_len)
+  tmp1 = cv2.arrowedLine(tmp1, origin, yy, color=(0,255,0), thickness=thickness,line_type=line_type, tipLength=max(arrow_len, 1e-6))
   mask = np.linalg.norm(tmp1-tmp, axis=-1)>0
   tmp[mask] = tmp[mask]*transparency + tmp1[mask]*(1-transparency)
   tmp1 = tmp.copy()
-  tmp1 = cv2.arrowedLine(tmp1, origin, zz, color=(255,0,0), thickness=thickness,line_type=line_type, tipLength=arrow_len)
+  tmp1 = cv2.arrowedLine(tmp1, origin, zz, color=(255,0,0), thickness=thickness,line_type=line_type, tipLength=max(arrow_len, 1e-6))
   mask = np.linalg.norm(tmp1-tmp, axis=-1)>0
   tmp[mask] = tmp[mask]*transparency + tmp1[mask]*(1-transparency)
   tmp = tmp.astype(np.uint8)

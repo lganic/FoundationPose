@@ -1,0 +1,28 @@
+# Exact versions used for this project's results. Install torch first, see scripts/setup_windows.md.
+# opencv stays below 5: OpenCV 5 rejects the float images this code passes to cv2.putText.
+einops==0.8.2
+gdown==6.5.1
+h5py==3.16.0
+imageio==2.38.0
+joblib==1.6.0
+kornia==0.8.2
+matplotlib==3.10.9
+ninja==1.13.2
+numpy==2.2.6
+omegaconf==2.4.0
+open3d==0.20.0
+opencv-python==4.14.0.94
+pandas==2.3.3
+pillow==12.3.0
+psutil==7.2.2
+pypng==0.20220715.0
+pytest==9.2.0
+pyyaml==6.0.3
+ruamel.yaml==0.19.1
+scikit-image==0.25.2
+scikit-learn==1.7.2
+scipy==1.15.3
+tqdm==4.70.1
+transformations==2025.1.1
+trimesh==5.2.0
+warp-lang==1.19.0
