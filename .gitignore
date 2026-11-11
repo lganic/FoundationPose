@@ -160,3 +160,7 @@ run_used.yml
 third_party/
 results/demo_mustard/
 results/raw/
+
+# Human labels: the blinding key and raw exports (which hold the rater's account id) stay local
+results/labeling/key.json
+results/labeling/raw_ratings/
