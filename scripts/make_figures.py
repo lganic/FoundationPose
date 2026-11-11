@@ -92,8 +92,68 @@ def reversal():
   fig.savefig(FIGS / 'slide_reversal.png', dpi=DPI)
   plt.close(fig)
 
+def fixed_broken():
+  """Failures the refiner fixed against good poses it broke, per condition, worst condition on top."""
+  d = pd.read_csv(TAB / 'failures_by_condition.csv').sort_values('fp_failures')
+  fig, ax = plt.subplots(figsize=(1664 * PX, 720 * PX))
+  y = list(range(len(d)))
+  ax.barh(y, d['fixed'], height=0.56, color=BLUE, label='Fixed: a failure became a success')
+  ax.barh(y, -d['broken'], height=0.56, color=ORANGE, label='Broken: a success became a failure')
+  for i, (f, b) in enumerate(zip(d['fixed'], d['broken'])):
+    ax.text(f + 0.5, i, str(f), va='center', fontsize=10.5, color=INK)
+    if b:
+      ax.text(-b - 0.5, i, str(b), va='center', ha='right', fontsize=10.5, color=INK)
+  ax.axvline(0, color=MUTED, lw=1)
+  ax.set_yticks(y, [f"{LABELS[c]}  ({n} failures)" for c, n in zip(d['condition'], d['fp_failures'])], color=INK)
+  ax.set_xlim(-32, 16)
+  ax.set_xticks([-30, -20, -10, 0, 10], ['30', '20', '10', '0', '10'])
+  ax.set_xlabel('Targets, out of the same 300 in every row')
+  ax.grid(axis='y', visible=False)
+  ax.legend(frameon=False, loc='lower left', fontsize=10)
+  fig.tight_layout()
+  fig.savefig(FIGS / 'report_fixed_broken.png', dpi=DPI)
+  plt.close(fig)
+
+
+def refiner_by_mask():
+  """The refiner's AR change on each dataset, with real detector masks and with the GT-mask oracle."""
+  from drpose.data import subset_keys
+  from drpose.stats import METRICS, paired_bootstrap
+  ev = lambda tag, ds: pd.read_csv(REPO / 'results/raw/eval' / tag / ds / 'clean.csv')
+  keep = subset_keys('test_subset')
+  rows = []
+  for ds, name, keys in (('ycbv', 'YCB-Video, 300 test targets', keep), ('lmo', 'LINEMOD-Occluded, 1,445 targets', None)):
+    for base, ref, masks in (('fp_cnos', 'dr_final', 'CNOS masks (real detector)'), ('fp', 'dr_final_gtmask', 'GT masks (oracle)')):
+      a, b = ev(base, ds), ev(ref, ds)
+      if keys is not None:
+        a, b = a[a['key'].isin(keys)], b[b['key'].isin(keys)]
+      r = paired_bootstrap(a, b, METRICS['ar'], n_boot=1000)
+      rows.append(dict(dataset=name, masks=masks, **{k: round(v, 2) for k, v in r.items() if k != 'n_clusters'}))
+  d = pd.DataFrame(rows)
+  d.to_csv(TAB / 'refiner_by_mask.csv', index=False)
+  print(d.to_string(index=False))
+
+  fig, ax = plt.subplots(figsize=(1664 * PX, 470 * PX))
+  y = [3, 2, 0.8, -0.2][:len(d)]
+  oracle = d['masks'].str.startswith('GT').to_numpy()
+  ax.axvline(0, color=MUTED, lw=1)
+  ax.hlines(y, d['lo'], d['hi'], color=ORANGE, lw=1.4)
+  ax.scatter(d['diff'][~oracle], [v for v, o in zip(y, oracle) if not o], s=46, color=ORANGE, edgecolor=SURFACE, linewidth=1, zorder=3, label='CNOS masks (real detector)')
+  ax.scatter(d['diff'][oracle], [v for v, o in zip(y, oracle) if o], s=46, facecolor=SURFACE, edgecolor=ORANGE, linewidth=1.4, zorder=3, label='GT masks (oracle)')
+  for v, (_, r) in zip(y, d.iterrows()):
+    ax.text(r['hi'] + 0.12, v, f"{r['diff']:+.2f}", va='center', fontsize=10.5, color=INK)
+  ax.set_yticks(y, [f"{r['dataset'].split(',')[0]}, {'GT' if r['masks'].startswith('GT') else 'CNOS'}" for _, r in d.iterrows()], color=INK)
+  ax.set_xlabel('Change in BOP AR from FoundationPose with the same masks (right is better)')
+  ax.grid(axis='y', visible=False)
+  ax.legend(frameon=False, loc='lower right', fontsize=10)
+  fig.tight_layout()
+  fig.savefig(FIGS / 'report_refiner_by_mask.png', dpi=DPI)
+  plt.close(fig)
+
 
 if __name__ == '__main__':
   occlusion()
   corruptions()
   reversal()
+  fixed_broken()
+  refiner_by_mask()
