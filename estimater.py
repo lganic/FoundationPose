@@ -9,7 +9,7 @@
 
 from Utils import *
 from datareader import *
-import itertools
+import itertools, tempfile
 from learning.training.predict_score import *
 from learning.training.predict_pose_refine import *
 import yaml
@@ -66,7 +66,7 @@ class FoundationPose:
     self.mesh_path = None
     self.mesh = mesh
     if self.mesh is not None:
-      self.mesh_path = f'/tmp/{uuid.uuid4()}.obj'
+      self.mesh_path = os.path.join(tempfile.gettempdir(), f'{uuid.uuid4()}.obj')
       self.mesh.export(self.mesh_path)
     self.mesh_tensors = make_mesh_tensors(self.mesh)
 
