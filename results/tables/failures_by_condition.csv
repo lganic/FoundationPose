@@ -1,0 +1,16 @@
+condition,n,fp_failures,fp_failure_pct,fixed,broken
+clean,300,32,10.7,0,0
+occlusion_25,300,42,14.0,0,1
+occlusion_50,300,75,25.0,6,2
+occlusion_75,300,159,53.0,11,9
+motion_blur_11,300,34,11.3,1,0
+motion_blur_21,300,59,19.7,2,0
+rgb_noise_25,300,31,10.3,1,0
+rgb_noise_50,300,31,10.3,1,0
+depth_noise_10,300,28,9.3,0,0
+depth_noise_20,300,50,16.7,2,28
+depth_holes_40,300,28,9.3,1,0
+depth_holes_60,300,33,11.0,1,0
+mask_dilate_7,300,29,9.7,1,0
+mask_erode_7,300,30,10.0,0,1
+mask_box,300,28,9.3,1,0

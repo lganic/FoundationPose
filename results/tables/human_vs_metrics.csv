@@ -1,0 +1,6 @@
+metric,metric_prefers_refined,of,decided_pairs,agree,agree_share,sign_test_p
+mspd,27,40,33,16,0.485,1.0
+te,21,40,33,13,0.394,0.2962
+re,27,40,33,14,0.424,0.4869
+adds,27,40,33,13,0.394,0.2962
+mssd,29,40,33,13,0.394,0.2962
