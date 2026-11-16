@@ -1,0 +1,2 @@
+dataset,targets,failures,failure_pct,failures_from_bad_detection,failures_with_good_detection,share_from_detection_pct,failure_rate_given_good_detection_pct
+ycbv,4123,392,9.51,272,120,69.39,3.23

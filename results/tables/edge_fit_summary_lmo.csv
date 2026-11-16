@@ -1,0 +1,22 @@
+quantity,mean,lo,hi,n,unit
+refined - FoundationPose (fit),0.063,0.047,0.08,1367,px
+GT - FoundationPose (fit),0.236,0.146,0.326,1367,px
+refined - FoundationPose (fit_loose),0.056,0.041,0.071,1367,px
+GT - FoundationPose (fit_loose),0.188,0.112,0.265,1367,px
+refined - FoundationPose (fit_seen),0.062,0.045,0.08,1337,px
+GT - FoundationPose (fit_seen),0.4,0.338,0.468,1165,px
+refined - FoundationPose: du,0.02,-0.092,0.122,1367,px
+refined - FoundationPose: dv,-0.447,-0.548,-0.343,1367,px
+refined - FoundationPose: dz,-0.308,-0.49,-0.136,1367,mm
+GT - FoundationPose: du,6.261,-0.635,13.502,1367,px
+GT - FoundationPose: dv,3.357,-1.224,7.741,1367,px
+GT - FoundationPose: dz,-20.057,-31.032,-9.887,1367,mm
+GT - refined: du,6.24,-0.671,13.514,1367,px
+GT - refined: dv,3.804,-0.782,8.19,1367,px
+GT - refined: dz,-19.749,-30.7,-9.557,1367,mm
+FoundationPose: dx,-0.51,-0.683,-0.321,1338,px
+FoundationPose: dy,-0.241,-0.444,-0.014,1338,px
+refined: dx,-0.679,-0.87,-0.487,1342,px
+refined: dy,0.174,-0.03,0.39,1342,px
+GT: dx,-0.345,-0.651,-0.043,1165,px
+GT: dy,-1.048,-1.403,-0.695,1165,px

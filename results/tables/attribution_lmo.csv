@@ -1,0 +1,2 @@
+dataset,targets,failures,failure_pct,failures_from_bad_detection,failures_with_good_detection,share_from_detection_pct,failure_rate_given_good_detection_pct
+lmo,1445,511,35.36,307,204,60.08,18.51
